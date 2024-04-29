@@ -13,14 +13,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.carolina.api.rest.entity.Cliente;
+import com.carolina.api.rest.entity.Producto;
 import com.carolina.api.rest.service.ClienteService;
+import com.carolina.api.rest.service.ProductoService;
 
 @RestController
 @RequestMapping("/api")
-public class ClienteController {
+public class ApiController {
 	
 	@Autowired
 	private ClienteService servicio;
+	
+	@Autowired 
+	private ProductoService servicioProd;
+	
 	
 	// metodo get que devuelve todos los clientes:
 	@GetMapping("/clientes")
@@ -60,4 +66,47 @@ public class ClienteController {
 	public Cliente delete(@PathVariable Long id) {
 		return servicio.borrar(id);
 	}
+	
+	
+	
+	// metodo get que devuelve todos los productos:
+	@GetMapping("/productos")
+	public List<Producto> indexProducto(){
+		return servicioProd.buscarProductos();
+	}
+	
+	// metodo que devuelve un solo producto dado el id:
+		@GetMapping("/productos/{id}") 
+		public Producto showProd(@PathVariable Long id) { 
+			return servicioProd.buscarProducotPorId(id);
+		}
+		
+		// metodo que guarda un solo producto:
+		@PostMapping("/productos")
+		public Producto createProd(@RequestBody Producto producto) {
+			return servicioProd.guardarProducto(producto);
+		}
+		
+		// metodo para actualizar producto por id:
+		@PutMapping("productos/{id}")
+		public Producto updateProd(@PathVariable Long id, @RequestBody Producto new_producto) {
+			
+			Producto productoUpdate = servicioProd.buscarProducotPorId(id);
+			
+			productoUpdate.setNombre(new_producto.getNombre());
+			productoUpdate.setCategoria(new_producto.getCategoria());
+			productoUpdate.setDescripcion(new_producto.getDescripcion());
+			productoUpdate.setTipo(new_producto.getTipo());
+			productoUpdate.setPrecio_compra(new_producto.getPrecio_compra());
+			productoUpdate.setPrecio_compra(new_producto.getPrecio_compra());
+			productoUpdate.setActivo(new_producto.isActivo());
+			
+			return servicioProd.guardarProducto(productoUpdate);
+		}
+		
+		//metodo para eliminar producto por id:
+		@DeleteMapping("productos/{id}")
+		public Producto deleteProd(@PathVariable Long id) {
+			return servicioProd.eliminarProducto(id);
+		}
 }

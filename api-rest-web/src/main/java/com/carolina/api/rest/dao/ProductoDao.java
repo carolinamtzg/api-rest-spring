@@ -3,9 +3,10 @@ package com.carolina.api.rest.dao;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.carolina.api.rest.entity.Cliente;
+import com.carolina.api.rest.entity.Producto;
+
 
 @Repository
-public interface ClienteDao extends CrudRepository<Cliente, Long>{ // se pasa la entity y el type del ID.
+public interface ProductoDao extends CrudRepository<Producto, Long>{
 	
 }
